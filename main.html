@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyBoard Shop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root { --brand-color: #004d00; --font-serif: "Playfair Display", serif; --font-sans: "Noto Sans KR", sans-serif; --text-main: #333; --text-subtle: #888; --border-color: #eee; }
+        html, body { height: 100%; margin: 0; }
+        body { font-family: var(--font-sans); color: var(--text-main); background-color: #fff; }
+        .page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+        .global-nav { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .global-nav .container { display: flex; justify-content: space-between; align-items: center; }
+        .global-nav .logo a { font-family: var(--font-serif); font-size: 1.5rem; color: var(--text-main); text-decoration: none; }
+        .global-nav .main-menu a, .global-nav .user-menu a { color: var(--text-subtle); text-decoration: none; margin: 0 0.75rem; font-size: 0.9rem; }
+        .global-nav a:hover { color: var(--text-main); }
+        main { flex-grow: 1; display: flex; justify-content: center; align-items: center; }
+        #brand { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 500; font-variant-numeric: lining-nums; }
+        #brand::after { content: '|'; margin-left: 0.25rem; animation: blink 0.7s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="global-nav">
+            <div class="container">
+                <div class="logo"><a href="main.html">KeyBoard Shop</a></div>
+                <div class="main-menu">
+                    <a href="shop.html">Shop</a>
+                    <a href="#">About</a>
+                </div>
+                <div class="user-menu">
+                    <a href="login.html">Login</a>
+                    <a href="cart.html">Cart</a>
+                </div>
+            </div>
+        </header>
+        <main>
+            <span id="brand"></span>
+        </main>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userRole = sessionStorage.getItem('userRole');
+            if (userRole === 'admin') {
+                const userMenu = document.querySelector('.user-menu');
+                if (userMenu) {
+                    userMenu.innerHTML = `
+                        <a href="mypage.html">My Page</a>
+                        <a href="cart.html">Cart</a>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="admin/product-list.html">상품 관리</a></li>
+                                <li><a class="dropdown-item" href="admin/member-list.html">회원 관리</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" id="logout-btn">로그아웃</a></li>
+                            </ul>
+                        </div>
+                    `;
+                    const logoutBtn = document.getElementById('logout-btn');
+                    if(logoutBtn) {
+                        logoutBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            sessionStorage.removeItem('userRole');
+                            alert('로그아웃되었습니다.');
+                            window.location.href = 'main.html';
+                        });
+                    }
+                }
+            }
+            const brandEl = document.getElementById('brand');
+            if (brandEl) {
+                const text = '@2SEOES SHOP';
+                let idx = 0;
+                brandEl.textContent = '';
+                function type() {
+                    if (idx < text.length) {
+                        brandEl.textContent += text.charAt(idx++);
+                        setTimeout(type, 150);
+                    }
+                }
+                type();
+            }
+            // 기존 데이터 삭제하고 새로 세팅 (한번 실행 후 이 줄 삭제 가능)
+            localStorage.removeItem('myShopProducts');
+            if (!localStorage.getItem('myShopProducts')) {
+                const sampleProducts = [
+                    { id: Date.now(), name: 'Leopold FC660M PD', category: '키보드', price: 159000, stock: 25, description: '체리 MX 스위치 탑재, 컴팩트한 66키 레이아웃의 고급 기계식 키보드입니다.', imageUrl: 'images/keyboard1.JPG' },
+                    { id: Date.now() + 1, name: 'Varmilo VA87M', category: '키보드', price: 179000, stock: 18, description: '다양한 테마 디자인과 뛰어난 타건감을 제공하는 텐키리스 키보드입니다.', imageUrl: 'images/keyboard2.JPG' },
+                    { id: Date.now() + 2, name: 'GMK Olivia++ 키캡', category: '키캡', price: 189000, stock: 12, description: '더블샷 ABS 소재의 프리미엄 키캡 세트입니다. Cherry 프로파일.', imageUrl: 'images/keycap1.JPG' },
+                    { id: Date.now() + 3, name: 'PBT Chalk 키캡', category: '키캡', price: 89000, stock: 35, description: 'PBT 염료승화 방식의 내구성 뛰어난 키캡 세트입니다.', imageUrl: 'images/keycap2.JPG' },
+                    { id: Date.now() + 4, name: 'Cherry MX Red 스위치 (10개)', category: '스위치', price: 12000, stock: 100, description: '부드러운 리니어 타입의 체리 MX 적축 스위치입니다.', imageUrl: 'images/switch1.JPG' },
+                    { id: Date.now() + 5, name: 'Gateron Yellow 스위치 (10개)', category: '스위치', price: 8000, stock: 150, description: '가성비 뛰어난 리니어 스위치로 부드러운 타건감을 제공합니다.', imageUrl: 'images/switch2.JPG' },
+                    { id: Date.now() + 6, name: 'Glorious GMMK Pro', category: '키보드', price: 229000, stock: 10, description: '핫스왑 지원 75% 레이아웃 알루미늄 커스텀 키보드입니다.', imageUrl: 'images/keyboard3.JPG' },
+                    { id: Date.now() + 7, name: 'Durock V2 스태빌라이저', category: '액세서리', price: 25000, stock: 45, description: '스크류인 방식의 프리미엄 스태빌라이저 세트입니다.', imageUrl: 'images/accessory1.JPG' },
+                    { id: Date.now() + 8, name: '코일 케이블 (스카이블루)', category: '액세서리', price: 45000, stock: 30, description: 'USB-C to USB-A 커스텀 코일 케이블입니다. 길이 1.5m.', imageUrl: 'images/accessory2.JPG' },
+                    { id: Date.now() + 9, name: '아티산 데스크 매트', category: '액세서리', price: 35000, stock: 50, description: '900x400mm 사이즈의 프리미엄 데스크 매트입니다.', imageUrl: 'images/accessory3.JPG' }
+                ];
+                localStorage.setItem('myShopProducts', JSON.stringify(sampleProducts));
+            }
+            if (!localStorage.getItem('myShopMembers')) {
+                const sampleMembers = Array.from({length: 10}, (_, i) => ({
+                    id: 100 + i,
+                    name: `김회원${i + 1}`,
+                    email: `member${i + 1}@example.com`,
+                    joined: `2025-07-${29 - i}`
+                }));
+                localStorage.setItem('myShopMembers', JSON.stringify(sampleMembers));
+            }
+        });
+    </script>
+</body>
+</html>

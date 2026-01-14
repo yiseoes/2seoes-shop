@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyShop - Edit My Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root { --brand-color: #004d00; --font-serif: "Playfair Display", serif; --font-sans: "Noto Sans KR", sans-serif; --text-main: #333; --text-subtle: #888; --border-color: #eee; }
+        body { font-family: var(--font-sans); color: var(--text-main); background-color: #fff; }
+        .page-container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+        .global-nav { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); margin-bottom: 3rem; }
+        .global-nav .logo a { font-family: var(--font-serif); font-size: 1.5rem; color: var(--text-main); text-decoration: none; }
+        .global-nav .main-menu a, .global-nav .user-menu a { color: var(--text-subtle); text-decoration: none; margin: 0 0.75rem; font-size: 0.9rem; }
+        .global-nav a:hover { color: var(--text-main); }
+        .content-box { max-width: 500px; margin: 3rem auto; }
+        .content-box h1 { font-family: var(--font-serif); font-size: 2.5rem; margin-bottom: 3rem; text-align: center; }
+        .form-label { font-size: 0.85rem; color: var(--text-subtle); }
+        .form-control { border-radius: 0; border: 1px solid var(--border-color); padding: 0.75rem; }
+        .form-control:focus { border-color: var(--text-main); box-shadow: none; }
+        .btn-dark, .btn-outline-secondary { border-radius: 0; padding: 0.75rem; }
+        .delete-link { font-size: 0.8rem; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <nav class="global-nav">
+            <div class="logo"><a href="main.html">MyShop</a></div>
+            <div class="main-menu"><a href="shop.html">Shop</a><a href="#">About</a></div>
+            <div class="user-menu"><a href="mypage.html">My Page</a><a href="cart.html">Cart</a></div>
+        </nav>
+        <main>
+            <div class="content-box">
+                <h1>Edit Information</h1>
+                <form id="edit-form">
+                    <div class="mb-3"><label for="userName" class="form-label">Name</label><input type="text" class="form-control" id="userName" value="김이서 (관리자)"></div>
+                    <div class="mb-3"><label for="userEmail" class="form-label">ID (Email)</label><input type="email" class="form-control" id="userEmail" value="admin" readonly disabled></div>
+                    <hr class="my-4">
+                    <p class="text-muted small">비밀번호를 변경할 경우에만 입력하세요.</p>
+                    <div class="mb-3"><label for="newPassword" class="form-label">New Password</label><input type="password" class="form-control" id="newPassword"></div>
+                    <div class="d-flex gap-2 mt-4">
+                        <a href="mypage.html" class="btn btn-outline-secondary w-100">Cancel</a>
+                        <button type="submit" class="btn btn-dark w-100">Save Changes</button>
+                    </div>
+                </form>
+                <div class="text-center mt-5"><a href="#" id="delete-account-link" class="text-danger delete-link">Delete Account</a></div>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => { /* ... (main.html과 동일한 스크립트 내용) ... */ });
+        document.getElementById('edit-form').addEventListener('submit', (e) => { e.preventDefault(); alert('정보가 수정되었습니다.'); window.location.href = 'mypage.html'; });
+        document.getElementById('delete-account-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('정말 계정을 삭제하시겠습니까?')) { alert('계정이 삭제되었습니다.'); sessionStorage.removeItem('userRole'); window.location.href = 'main.html'; }
+        });
+    </script>
+</body>
+</html>

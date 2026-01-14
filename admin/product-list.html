@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyBoard Shop Admin - 상품 목록</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root { --brand-color: #004d00; --font-serif: "Playfair Display", serif; --font-sans: "Noto Sans KR", sans-serif; --text-main: #333; --text-subtle: #888; --border-color: #eee; }
+        body { font-family: var(--font-sans); color: var(--text-main); background-color: #fff; }
+        .page-container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+        .global-nav { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); margin-bottom: 3rem; }
+        .global-nav .logo a { font-family: var(--font-serif); font-size: 1.5rem; color: var(--text-main); text-decoration: none; }
+        .global-nav .main-menu a, .global-nav .user-menu a { color: var(--text-subtle); text-decoration: none; margin: 0 0.75rem; font-size: 0.9rem; }
+        .global-nav a:hover { color: var(--text-main); }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .page-header h1 { font-family: var(--font-serif); font-size: 2rem; font-weight: 500; margin: 0; }
+        .btn-primary { background-color: var(--brand-color); border-color: var(--brand-color); }
+        .table { font-size: 0.9rem; } .table th { font-weight: 500; color: var(--text-subtle); }
+        .product-thumbnail { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <nav class="global-nav">
+            <div class="logo"><a href="../main.html">KeyBoard Shop</a></div>
+            <div class="main-menu"><a href="../shop.html">Shop</a><a href="#">About</a></div>
+            <div class="user-menu d-flex align-items-center">
+                <a href="../mypage.html">My Page</a><a href="../cart.html">Cart</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Admin</a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item active" href="product-list.html">상품 관리</a></li>
+                        <li><a class="dropdown-item" href="member-list.html">회원 관리</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="logout-btn">로그아웃</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <header class="page-header">
+            <h1>상품 관리</h1>
+            <a href="product-create.html" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle me-1"></i> 새 상품 등록</a>
+        </header>
+        <main>
+            <table class="table table-hover align-middle text-center">
+                <thead class="table-light"><tr><th>ID</th><th>썸네일</th><th class="text-start">상품명</th><th>가격</th><th>재고</th><th>관리</th></tr></thead>
+                <tbody id="product-table-body"></tbody>
+            </table>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutBtn = document.getElementById('logout-btn');
+            if(logoutBtn){ logoutBtn.addEventListener('click', (e) => { e.preventDefault(); sessionStorage.removeItem('userRole'); alert('로그아웃되었습니다.'); window.location.href = '../main.html'; }); }
+            renderProductList();
+        });
+        function renderProductList() {
+            const products = JSON.parse(localStorage.getItem('myShopProducts')) || [];
+            const tableBody = document.getElementById('product-table-body');
+            tableBody.innerHTML = '';
+            products.forEach(product => {
+                const imgUrl = product.imageUrl.startsWith('images/') ? '../' + product.imageUrl : product.imageUrl;
+                const row = `<tr><td>${product.id}</td><td><img src="${imgUrl}" class="product-thumbnail"></td><td class="text-start"><a href="product-detail.html?id=${product.id}" class="text-decoration-none text-dark">${product.name}</a></td><td>₩ ${product.price.toLocaleString()}</td><td>${product.stock}</td><td><a href="product-edit.html?id=${product.id}" class="btn btn-sm btn-outline-secondary">수정</a> <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${product.id})">삭제</button></td></tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+        function deleteProduct(productId) {
+            if (confirm(`상품 ID: ${productId}번 상품을 정말 삭제하시겠습니까?`)) {
+                let products = JSON.parse(localStorage.getItem('myShopProducts')) || [];
+                products = products.filter(p => p.id !== productId);
+                localStorage.setItem('myShopProducts', JSON.stringify(products));
+                renderProductList();
+                alert('상품이 삭제되었습니다.');
+            }
+        }
+    </script>
+</body>
+</html>
