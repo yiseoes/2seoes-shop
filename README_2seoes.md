@@ -305,6 +305,26 @@ const sampleMembers = Array.from({length: 10}, (_, i) => ({
 
 ---
 
+## 스크린샷
+
+| 메인 페이지 | 로그인 |
+|:-----------:|:------:|
+| ![메인](screenshots/main.JPG) | ![로그인](screenshots/login.JPG) |
+
+| 회원가입 | 상품 목록 (그리드) |
+|:--------:|:-----------------:|
+| ![회원가입](screenshots/join.JPG) | ![그리드](screenshots/Grid.JPG) |
+
+| 상품 목록 (리스트) | 상품 상세 |
+|:-----------------:|:---------:|
+| ![리스트](screenshots/List.JPG) | ![상세](screenshots/detail.JPG) |
+
+| 상품 관리 (관리자) | 회원 관리 (관리자) |
+|:------------------:|:------------------:|
+| ![상품관리](screenshots/productlist.JPG) | ![회원관리](screenshots/userlist.JPG) |
+
+---
+
 ## 실행 방법
 
 1. nginx 서버 시작
